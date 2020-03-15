@@ -53,9 +53,9 @@ def draw_curve_tk(curve):
     w_width = 2000
     w = Canvas(master, width=w_width, height=w_height)
     w.pack()
-    scaling_factor = 0.2*w_width
+    scaling_factor = 0.3*w_width
     offsetX = 0.1*w_width
-    offsetY = 0.5*w_height
+    offsetY = 0.2*w_height
 
     for i in range(1, len(curve)):
         w.create_line(scaling_factor*curve[i-1][0]+offsetX,
@@ -65,8 +65,8 @@ def draw_curve_tk(curve):
     mainloop()
 
 def draw_curve_turtle_helper(curve):
-    scaling_factor = 2450
-    offset_y = -500
+    scaling_factor = 1000
+    offset_y = -200
     penup()
     goto(curve[0][0]*scaling_factor-scaling_factor/2,
                       curve[0][1]*scaling_factor+offset_y)
@@ -87,7 +87,7 @@ def draw_curve_turtle(seed):
     speed(0)
     hideturtle()
     colors = ['blue', 'green', 'red', 'black', 'purple']
-    for x in range(0, 7):
+    for x in range(0, 5):
         #color(colors[x % len(colors)], colors[(x+4) % len(colors)])
         draw_curve_turtle_helper(curve)
         curve = update_curve(curve, seed)
@@ -104,5 +104,13 @@ seed = [[0,0], [1/3, 0], [0.5, cos(pi/6)*(1/3)], [2/3,0], [1,0]]
 #Square wave
 #seed = [[0,0], [0, 0.5], [0.5, 0.5], [0.5,0], [0.5, -0.5], [1,-0.5], [1,0]]
 
+#modified square wave
+seed1 = [[0,0], [1/4,0], [1/4,1/4], [1/2,1/4], [1/2, 0], [1/2, -1/4], [3/4, -1/4], [3/4, 0], [1,0]]
 
-draw_curve_turtle(seed)
+seeds = [seed, seed1]
+
+curve = [[0, 0], [1, 0], [1,1], [0,1], [0,0]]
+for i in range(0, 5):
+    curve = update_curve(curve, seeds[i % 2])
+draw_curve_tk(curve)
+#draw_curve_turtle(seed)
