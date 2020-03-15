@@ -1,4 +1,4 @@
-from math import sin, cos, pi, sqrt, atan
+from math import sin, cos, pi, sqrt, asin
 from turtle import * 
 from tkinter import *
 import time
@@ -22,13 +22,14 @@ def move_each(starting_point, seed):
     return new_seed;
 
 def calculate_rotation(point1, point2):
-    if point2[0]-point1[0] == 0.0:
-            return  0
-    elif point1[0] <= point2[0]:
-        return -atan((point2[1]-point1[1])/(point2[0]-point1[0]))
+    b = point2[0] - point1[0] 
+    h = point2[1] - point1[1]
+    hyp = sqrt(b**2 + h**2)
+    if(b > 0):
+        return -asin(h/hyp)
     else:
-        return -atan((point2[1]-point1[1])/(point2[0]-point1[0])) + pi
-            
+        return -pi + asin(h/hyp)
+    
 def update_curve(curve, seed):
     new_curve = []
     scaling = sqrt(((curve[0][0]-curve[1][0])**2 +
@@ -52,42 +53,28 @@ def draw_curve(curve):
     w_width = 2000
     w = Canvas(master, width=w_width, height=w_height)
     w.pack()
-    scaling_factor = 0.8*w_width
+    scaling_factor = 0.2*w_width
     offsetX = 0.1*w_width
-    offsetY = 0.1*w_height
-    
+    offsetY = 0.5*w_height
+
     for i in range(1, len(curve)):
         w.create_line(scaling_factor*curve[i-1][0]+offsetX,
                       w_height - scaling_factor*curve[i-1][1]-offsetY,
                       scaling_factor*curve[i][0]+offsetX,
                       w_height - scaling_factor*curve[i][1] -offsetY)
     mainloop()
-         
+
 
 #seed = [[0, 0], [0.5, sqrt(3)/6], [1, 0]]
 
-seed = [[0,0], [1/3, 0], [0.5, cos(pi/6)*(1/3)], [2/3,0], [1,0]]
+#seed = [[0,0], [1/3, 0], [0.5, cos(pi/6)*(1/3)], [2/3,0], [1,0]]
 #seed = [[0,0], [1/2, 1/4], [1/2, -1/4], [1,0]]
+seed = [[0,0], [0, 0.5], [0.5, 0.5], [0.5,0], [0.5, -0.5], [1,-0.5], [1,0]]
 
 curve = [[0, 0], [1, 0]]
       
 for x in range(0, 6):
     curve = update_curve(curve, seed)
 
+print(calculate_rotation([0,0], [0,1]))
 draw_curve(curve)
-
-'''
-color('red', 'yellow')
-begin_fill()
-speed(0)
-scaling_factor = 1000
-for point in curve:
-    scaled_pos = [point[0]*scaling_factor-scaling_factor/2,
-                  point[1]*scaling_factor]
-    goto(scaled_pos)
-
-goto(0,0)
-
-end_fill()
-done()
-'''
