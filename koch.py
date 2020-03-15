@@ -46,7 +46,7 @@ def update_curve(curve, seed):
 
     return new_curve;
 
-def draw_curve(curve):
+def draw_curve_tk(curve):
     master = Tk()
     master.title("Koch curve")
     w_height = 1000
@@ -64,17 +64,45 @@ def draw_curve(curve):
                       w_height - scaling_factor*curve[i][1] -offsetY)
     mainloop()
 
+def draw_curve_turtle_helper(curve):
+    scaling_factor = 2450
+    offset_y = -500
+    penup()
+    goto(curve[0][0]*scaling_factor-scaling_factor/2,
+                      curve[0][1]*scaling_factor+offset_y)
+    pendown()
+    begin_fill()
+    for point in curve:
+        scaled_pos = [point[0]*scaling_factor-scaling_factor/2,
+                      point[1]*scaling_factor+offset_y]
+        goto(scaled_pos)
+    goto(0,offset_y)
+    #end_fill()
 
+def draw_curve_turtle(seed):
+    curve = [[0, 0], [1, 0]]
+    setup(2500, 1200)
+    #screensize(2500, 1200)
+    color('green', 'white')
+    speed(0)
+    hideturtle()
+    colors = ['blue', 'green', 'red', 'black', 'purple']
+    for x in range(0, 7):
+        #color(colors[x % len(colors)], colors[(x+4) % len(colors)])
+        draw_curve_turtle_helper(curve)
+        curve = update_curve(curve, seed)
+
+    print("done")
+    done()
+
+    
 #seed = [[0, 0], [0.5, sqrt(3)/6], [1, 0]]
 
-#seed = [[0,0], [1/3, 0], [0.5, cos(pi/6)*(1/3)], [2/3,0], [1,0]]
+seed = [[0,0], [1/3, 0], [0.5, cos(pi/6)*(1/3)], [2/3,0], [1,0]]
 #seed = [[0,0], [1/2, 1/4], [1/2, -1/4], [1,0]]
-seed = [[0,0], [0, 0.5], [0.5, 0.5], [0.5,0], [0.5, -0.5], [1,-0.5], [1,0]]
 
-curve = [[0, 0], [1, 0]]
-      
-for x in range(0, 6):
-    curve = update_curve(curve, seed)
+#Square wave
+#seed = [[0,0], [0, 0.5], [0.5, 0.5], [0.5,0], [0.5, -0.5], [1,-0.5], [1,0]]
 
-print(calculate_rotation([0,0], [0,1]))
-draw_curve(curve)
+
+draw_curve_turtle(seed)
