@@ -1,4 +1,4 @@
-from math import sin, cos, pi, sqrt, asin
+from math import sin, cos, tan, pi, sqrt, asin
 from turtle import * 
 from tkinter import *
 import time
@@ -67,7 +67,17 @@ def change_curve(w):
 
 class MyApp:
     def __init__(self, parent):
-        curve = [[0, 0], [1, 0], [1,1], [0,1], [0,0]]
+        #Single line
+        curve = [[0,0], [1,0]]
+
+        #Triangle
+        curve = [[0,0], [1,0], [0.5, 0.5*tan(pi/3)], [0,0]]
+        
+        #Square
+        #curve = [[0, 0], [1, 0], [1,1], [0,1], [0,0]]
+
+        #Change direction of the lines
+        curve.reverse()
         
         #Modified square wave
         #seed = [[0,0], [1/4,0], [1/4,1/4], [1/2,1/4], [1/2, 0], [1/2, -1/4], [3/4, -1/4], [3/4, 0], [1,0]]
@@ -76,7 +86,7 @@ class MyApp:
         #seed = [[0, 0], [0.5, sqrt(3)/6], [1, 0]]
 
         #?
-        #seed = [[0,0], [1/3, 0], [0.5, cos(pi/6)*(1/3)], [2/3,0], [1,0]]
+        seed = [[0,0], [1/3, 0], [0.5, cos(pi/6)*(1/3)], [2/3,0], [1,0]]
 
         #?
         #seed = [[0,0], [1/2, 1/4], [1/2, -1/4], [1,0]]
@@ -129,25 +139,6 @@ class DrawingCanvas(Canvas):
     def reset(self):
         self.curve = self.original_curve
         self.draw()
-
-        
-#seed = [[0, 0], [0.5, sqrt(3)/6], [1, 0]]
-
-seed = [[0,0], [1/3, 0], [0.5, cos(pi/6)*(1/3)], [2/3,0], [1,0]]
-#seed = [[0,0], [1/2, 1/4], [1/2, -1/4], [1,0]]
-
-#Square wave
-#seed = [[0,0], [0, 0.5], [0.5, 0.5], [0.5,0], [0.5, -0.5], [1,-0.5], [1,0]]
-
-#modified square wave
-seed1 = [[0,0], [1/4,0], [1/4,1/4], [1/2,1/4], [1/2, 0], [1/2, -1/4], [3/4, -1/4], [3/4, 0], [1,0]]
-
-seeds = [seed, seed1]
-
-#curve = [[0, 0], [1, 0], [1,1], [0,1], [0,0]]
-#curve= [[0,0], [1,0]]
-#draw_curve_turtle(seed)
-
 
 master = Tk()
 master.title("Koch curve")
