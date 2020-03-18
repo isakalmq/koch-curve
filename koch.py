@@ -99,6 +99,9 @@ class MyApp:
         button_container.pack()
 
         w = DrawingCanvas(curve, seed, parent, width=2500, height=1300)
+        w.bind("<Button-5>", w.zoom)
+        w.bind("<Button-4>", w.zoom)
+
         w.pack()
         
         change_curve_button = Button(button_container, text="Change", command=w.next)
@@ -111,11 +114,13 @@ class MyApp:
 
 class DrawingCanvas(Canvas):
     def __init__(self, curve, seed, master=None, **kwargs):
-        Canvas.__init__(self, master, **kwargs)
+        Canvas.__init__(self, master, bg='white', **kwargs)
         
         self.original_curve = curve
         self.curve = curve
         self.seed = seed
+        self.scaling_factor = 0.3*2500
+
         self.draw()
         
     def next(self):
@@ -125,7 +130,7 @@ class DrawingCanvas(Canvas):
     def draw(self):
         w_width = 2500
         w_height = 1300
-        scaling_factor = 0.3*w_width
+        scaling_factor = self.scaling_factor
         offsetX = 0.1*w_width
         offsetY = 0.2*w_height
         self.delete("all")
@@ -139,6 +144,14 @@ class DrawingCanvas(Canvas):
     def reset(self):
         self.curve = self.original_curve
         self.draw()
+
+    def zoom(self, event):
+        if event.num == 5:
+            self.scaling_factor *=0.9
+        else:
+            self.scaling_factor *=1.1
+        self.draw()
+        
 
 master = Tk()
 master.title("Koch curve")
